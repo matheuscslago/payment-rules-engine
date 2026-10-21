@@ -9,24 +9,22 @@ public class PixPayment implements PaymentProcessor {
     private double debitLimit;
 
     public PixPayment(String pixKey, double debitLimit) {
-        if (!pixKey.trim().isEmpty()) {
+        if (pixKey == null || pixKey.trim().isEmpty()) {
             this.pixKey = pixKey;
-        } else {
             throw new InvalidPixKeyException();
         }
-
-        if (debitLimit >= 0) {
-            this.debitLimit = debitLimit;
-        } else {
+        if (debitLimit < 0) {
             throw new IllegalArgumentException("[Error] Debit Limit must be positive!");
         }
+        this.pixKey = pixKey;
+        this.debitLimit = debitLimit;
     }
 
     @Override
     public boolean processPayment(double amount) throws RuntimeException {
-        if(amount > debitLimit){
+        if (amount > debitLimit) {
             throw new InsufficientDebitLimitException("[Error] Insufficient Debit Limit! Attempt Value: " + amount + " | Debit Limit: " + debitLimit);
-        }else{
+        } else {
             deductDebitLimit(amount);
             System.out.println("Payment of R$" + amount + " instantly made!");
             return true;
@@ -41,11 +39,11 @@ public class PixPayment implements PaymentProcessor {
         return debitLimit;
     }
 
-    public void deductDebitLimit(double value){
+    public void deductDebitLimit(double value) {
         this.debitLimit -= value;
     }
 
-    public void depositDebitLimit(double value){
+    public void depositDebitLimit(double value) {
         this.debitLimit += value;
     }
 }

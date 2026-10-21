@@ -9,17 +9,16 @@ public class CreditCardPayment implements PaymentProcessor {
     private static final double ADMINISTRATIVE_FEE = 0.02;
 
     public CreditCardPayment(String cardNumber, double creditLimit) {
-        if (!cardNumber.trim().isEmpty()) {
-            this.cardNumber = cardNumber;
-        } else {
+        if (cardNumber.trim().isEmpty() || cardNumber == null) {
             throw new IllegalArgumentException("[Error] This card needs to have a number!");
         }
 
-        if (creditLimit > 0) {
-            this.creditLimit = creditLimit;
-        } else {
+        if (creditLimit < 0) {
             throw new InsufficientCreditLimitException("[Error] Initial credit limit cannot be negative!");
         }
+
+        this.cardNumber = cardNumber;
+        this.creditLimit = creditLimit;
     }
 
     @Override
