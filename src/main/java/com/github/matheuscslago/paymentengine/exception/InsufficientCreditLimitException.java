@@ -1,10 +1,10 @@
 package com.github.matheuscslago.paymentengine.exception;
 
-public class InvalidCreditLimitException extends RuntimeException {
-    public InvalidCreditLimitException(){
+public class InsufficientCreditLimitException extends RuntimeException {
+    public InsufficientCreditLimitException(){
         super("Insufficient Credit Limit!");
     }
-    public InvalidCreditLimitException(String message) {
+    public InsufficientCreditLimitException(String message) {
         super(message);
     }
 }
