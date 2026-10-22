@@ -9,7 +9,7 @@ public class CreditCardPayment implements PaymentProcessor {
     private static final double ADMINISTRATIVE_FEE = 0.02;
 
     public CreditCardPayment(String cardNumber, double creditLimit) {
-        if (cardNumber.trim().isEmpty() || cardNumber == null) {
+        if (cardNumber == null || cardNumber.trim().isEmpty()) {
             throw new IllegalArgumentException("[Error] This card needs to have a number!");
         }
 
@@ -22,13 +22,13 @@ public class CreditCardPayment implements PaymentProcessor {
     }
 
     @Override
-    public boolean processPayment(double amount) throws RuntimeException {
+    public boolean processPayment(double amount){
         double total = amount + (amount * ADMINISTRATIVE_FEE);
         if(total > creditLimit){
-            throw new InsufficientCreditLimitException("[Error] Insufficient Credit Limit! Attempt Value: " + total + " | Credit Limit: " + creditLimit);
+            throw new InsufficientCreditLimitException("[Error] Insufficient Credit Limit! Attempt Value (with fee): R$" + total + " | Credit Limit: R$" + creditLimit);
         }else{
             deductCreditLimit(total);
-            System.out.println("Payment of R$" + total + " made!");
+            System.out.println("[Credit] Payment of R$" + total + " approved! Remaining Limit: R$" + this.creditLimit);
             return true;
         }
     }
